@@ -34,10 +34,10 @@ interface IRow {
 `
 })
 
-export class AppComponent implements OnInit{
+export class AppComponent /*implements OnInit*/{
   public getJsonValue:  any;
-  constructor(private http: HttpClient){}
-  ngOnInit() {
+  //constructor(private http: HttpClient){}
+ /* ngOnInit() {
     this.getMethod();
   }
 
@@ -45,7 +45,7 @@ export class AppComponent implements OnInit{
     this.http.get('https://localhost:8080/get_data').subscribe((data) => {
       this.getJsonValue = data;
     })
-  }
+  }*/
   // Row Data: The data to be displayed.
 
   rowData: IRow [] =[
