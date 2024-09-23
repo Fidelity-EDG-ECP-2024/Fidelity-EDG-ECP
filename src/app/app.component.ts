@@ -35,6 +35,7 @@ interface IRow {
 })
 
 export class AppComponent /*implements OnInit*/{
+  title = 'GridTest';
   public getJsonValue:  any;
   //constructor(private http: HttpClient){}
  /* ngOnInit() {
