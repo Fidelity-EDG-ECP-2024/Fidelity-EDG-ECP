@@ -3,14 +3,15 @@ import { AgGridAngular } from 'ag-grid-angular'; // Angular Data Grid Component
 import { ColDef } from 'ag-grid-community'; // Column Definition Type Interface
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpClientModule} from "@angular/common/http";
+import {CommonModule} from "@angular/common";
 // import { MatDialog } from '@angular/material/dialog';
 
 interface IRow {
-  studentId: number;
+  id: number;
   lastName: string;
   firstName: string;
-  dateOfBirth: string;
+  dob: string;
   university: string;
   major: string;
   graduationYear: number;
@@ -18,7 +19,7 @@ interface IRow {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [AgGridAngular], // Add Angular Data Grid Component
+  imports: [AgGridAngular, CommonModule, HttpClientModule], // Add Angular Data Grid Component
   styleUrls: ['./app.component.css'],
   template:
     `
@@ -34,33 +35,34 @@ interface IRow {
 `
 })
 
-export class AppComponent /*implements OnInit*/{
+export class AppComponent implements OnInit {
   title = 'GridTest';
-  public getJsonValue:  any;
-  //constructor(private http: HttpClient){}
- /* ngOnInit() {
+  public rowData: IRow[] = [];
+
+  constructor (private http: HttpClient){}
+  ngOnInit() {
     this.getMethod();
   }
 
   public getMethod(){
-    this.http.get('https://localhost:8080/get_data').subscribe((data) => {
-      this.getJsonValue = data;
-    })
-  }*/
-  // Row Data: The data to be displayed.
+    this.http.get<IRow[]>('http://localhost:8080/api/get_data')
+      .subscribe((data) => {
+        if (data && data.length > 0) {
+          this.rowData = data;
+        } else {
+          console.log('No data found, retaining default data.');
+        }
+    });
+  }
 
-  rowData: IRow [] =[
-    { studentId: 1, lastName: "Sensat", firstName: "Michael", dateOfBirth: "3/5/2003", university: "WPI" , major: "CS", graduationYear: 2025},
-    { studentId: 2, lastName: "Song", firstName: "Taeha", dateOfBirth: "3/5/2003", university: "WPI" , major: "CS", graduationYear: 2025},
-    { studentId: 3, lastName: "Sensat", firstName: "Michael", dateOfBirth: "3/5/2003", university: "WPI" , major: "CS", graduationYear: 2025},
-  ];
+  // Row Data: The data to be displayed.
 
   // Column Definitions: Defines the columns to be displayed.
   colDefs: ColDef<IRow>[] = [
-    { field: 'studentId'},
+    { field: 'id'},
     { field: 'lastName'},
     { field: 'firstName'},
-    { field: 'dateOfBirth' },
+    { field: 'dob' },
     { field: 'university' },
     { field: 'major' },
     { field: 'graduationYear' },
