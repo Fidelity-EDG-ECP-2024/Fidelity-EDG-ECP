@@ -4,7 +4,7 @@ import { ICellRendererParams } from 'ag-grid-community';
 import { ColDef } from 'ag-grid-community'; // Column Definition Type Interface
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
-import {HttpClient, HttpClientModule} from "@angular/common/http";
+import {HttpClient, HttpClientModule, HttpParams} from "@angular/common/http";
 import {CommonModule} from "@angular/common";
 // import { MatDialog } from '@angular/material/dialog';
 
@@ -62,16 +62,17 @@ export class AppComponent implements OnInit {
     });
   }
 
-  public deleteRow(row: IRow) {
-    this.http.delete(`http://localhost:8080/api/delete`, { body: row }) // Send the entire row object as the body
+  public deleteRow(id: number) {
+    let params = new HttpParams().set('id', id);
+    this.http.post(`http://localhost:8080/api/delete_data?id=${id}`,{}) // Send the entire row object as the body
       .subscribe({
         next: () => {
           // Remove the deleted row from local data
-          this.rowData = this.rowData.filter(r => r.id !== row.id);
-          console.log(`Deleted row with id: ${row.id}`);
+          this.rowData = this.rowData.filter(r => r.id !== id);
+          console.log(`Deleted row with id: ${id}`);
         },
         error: (err) => {
-          console.error(`Error deleting row with id: ${row.id}`, err);
+          console.error(`Error deleting row with id: ${id}`, err);
         }
       });
   }
@@ -101,7 +102,7 @@ export class AppComponent implements OnInit {
               <i class="fas fa-pencil-alt" style="color: #007bff;"></i>
             </button>
             <button class="delete-button" style="background:none; border:none; cursor:pointer;"
-              onClick="window.angularComponentRef.deleteRow(${JSON.stringify(params.data)})">
+              onClick="window.angularComponentRef.deleteRow(${params.data.id})">
               <i class="fas fa-trash" style="color: #dc3545;"></i>
             </button>
           </div>
