@@ -6,6 +6,7 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
 import {HttpClient, HttpClientModule, HttpParams} from "@angular/common/http";
 import {CommonModule} from "@angular/common";
+import { GridApi, GridReadyEvent } from 'ag-grid-community';
 // import { MatDialog } from '@angular/material/dialog';
 
 interface IRow {
@@ -36,12 +37,17 @@ declare global {
 [rowData]="rowData"
 [columnDefs]="colDefs"
 [defaultColDef]="defaultColDef"
-
+ (gridReady)="onGridReady($event)"
  />
 `
 })
 
 export class AppComponent implements OnInit {
+  private gridApi!: GridApi;
+
+  onGridReady(params: GridReadyEvent) {
+    this.gridApi = params.api;
+  }
   title = 'GridTest';
   public rowData: IRow[] = [];
   constructor (private http: HttpClient){}
@@ -67,8 +73,12 @@ export class AppComponent implements OnInit {
     this.http.post(`http://localhost:8080/api/delete_data?id=${id}`,{}) // Send the entire row object as the body
       .subscribe({
         next: () => {
-          // Remove the deleted row from local data
-          this.rowData = this.rowData.filter(r => r.id !== id);
+          // // Remove the deleted row from local data
+          // this.rowData = this.rowData.filter(r => r.id !== id);
+          this.rowData=[];
+          this.getMethod();
+
+          this.gridApi.refreshCells();
           console.log(`Deleted row with id: ${id}`);
         },
         error: (err) => {
