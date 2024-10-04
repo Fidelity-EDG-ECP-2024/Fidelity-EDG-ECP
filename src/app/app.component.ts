@@ -43,6 +43,7 @@ export class AppComponent {
     { studentId: 3, lastName: "Sensat", firstName: "Michael", dateOfBirth: "3/5/2003", university: "WPI", major: "CS", graduationYear: 2025 },
   ];
 
+
   // Column Definitions: Defines the columns to be displayed, including Edit and Delete actions
   colDefs: ColDef[] = [
     { field: 'studentId', headerName: 'Student ID' },
