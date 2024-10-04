@@ -7,6 +7,8 @@ import 'ag-grid-community/styles/ag-theme-quartz.css';
 import {HttpClient, HttpClientModule, HttpParams} from "@angular/common/http";
 import {CommonModule} from "@angular/common";
 import { GridApi, GridReadyEvent } from 'ag-grid-community';
+import { GridOptions } from 'ag-grid-community';
+import { PopupCellRenderer } from './popup-cell/popup-cell-renderer.component';
 // import { MatDialog } from '@angular/material/dialog';
 
 interface IRow {
@@ -34,23 +36,57 @@ declare global {
  <ag-grid-angular
  class="ag-theme-quartz"
  style="height: 500px;"
+ [gridOptions]="gridOptions"
 [rowData]="rowData"
 [columnDefs]="colDefs"
 [defaultColDef]="defaultColDef"
+ [editType]="'fullRow'"
+ [suppressClickEdit]="true"
+ [animateRows]="true"
  (gridReady)="onGridReady($event)"
+ (selectionChanged)="onSelectionChanged($event)"
+ (cellClicked)="onCellClicked($event)"
  />
 `
 })
 
 export class AppComponent implements OnInit {
   private gridApi!: GridApi;
-
+  public gridOptions: GridOptions;
+  public selectedRow: any;
   onGridReady(params: GridReadyEvent) {
     this.gridApi = params.api;
   }
+  onSelectionChanged(event: any) {
+    this.selectedRow = event.api.getSelectedRows();
+    console.log(this.selectedRow);
+  }
+  onCellClicked(params:any) {
+    if (
+      params.event.target.dataset.action == 'toggle' &&
+      params.column.getColId() == 'action'
+    ) {
+      const cellRendererInstances = params.api.getCellRendererInstances({
+        rowNodes: [params.node],
+        columns: [params.column],
+      });
+      if (cellRendererInstances.length > 0) {
+        const instance = cellRendererInstances[0];
+        instance.togglePopup();
+      }
+    }
+  }
   title = 'GridTest';
   public rowData: IRow[] = [];
-  constructor (private http: HttpClient){}
+  constructor (private http: HttpClient){
+    this.gridOptions = {
+      rowSelection: 'single', // or 'multiple'
+      editType: 'fullRow',
+      animateRows: true,
+      suppressClickEdit: true,
+      defaultColDef: { flex: 1, minWidth: 100 }
+    };
+  }
   ngOnInit() {
     this.getMethod();
     (window as any).angularComponentRef = this; // Expose the component methods globally
@@ -86,41 +122,54 @@ export class AppComponent implements OnInit {
         }
       });
   }
-
+//
+// <div style="display: flex; justify-content: space-between;">
+//   <button class="edit-button" style="background:none; border:none; cursor:pointer;"
+//   onClick="window.angularComponentRef.editRow(${JSON.stringify(params.data)})">
+//   <i class="fas fa-pencil-alt" style="color: #007bff;"></i>
+//     </button>
+//     <button class="delete-button" style="background:none; border:none; cursor:pointer;"
+//   onClick="window.angularComponentRef.deleteRow(${params.data.id})">
+//   <i class="fas fa-trash" style="color: #dc3545;"></i>
+//     </button>
+//     </div>
   // Column Definitions: Defines the columns to be displayed.
   colDefs: ColDef<IRow>[] = [
-    { field: 'id'},
-    { field: 'lastName'},
-    { field: 'firstName'},
     {
-      field: 'dob',
-      valueFormatter: (params) => {
-        const date = new Date(params.value);
-        return date.toISOString().split('T')[0];  // Format date to "YYYY-MM-DD"
+      headerName: 'Action',
+      cellRenderer: PopupCellRenderer,
+      colId: 'action',
+      pinned: 'left',
+      editable: false,
+      maxWidth: 150,
+    },
+    { field: 'id', editable:true},
+    { field: 'lastName', editable:true},
+    { field: 'firstName', editable:true},
+    {
+      field: 'dob', editable:true,
+      valueGetter:  function(params) {
+         {
+            if (params.data && "dob" in params.data) {
+              const birth: string = params.data.dob;
+              const date = new Date(birth);
+              return date.toISOString().split('T')[0];  // Format date to "YYYY-MM-DD"
+            }
+            return;
+
+        }
+        return params;
       }
     },
-    { field: 'university' },
-    { field: 'major' },
-    { field: 'graduationYear' },
-    {
-      headerName: 'Actions',
-      cellRenderer: (params: ICellRendererParams) => {
-        return `
-          <div style="display: flex; justify-content: space-between;">
-            <button class="edit-button" style="background:none; border:none; cursor:pointer;"
-              onClick="window.angularComponentRef.editRow(${JSON.stringify(params.data)})">
-              <i class="fas fa-pencil-alt" style="color: #007bff;"></i>
-            </button>
-            <button class="delete-button" style="background:none; border:none; cursor:pointer;"
-              onClick="window.angularComponentRef.deleteRow(${params.data.id})">
-              <i class="fas fa-trash" style="color: #dc3545;"></i>
-            </button>
-          </div>
-        `;
-      }
-    }
+    { field: 'university' , editable:true},
+    { field: 'major' , editable:true},
+    { field: 'graduationYear' , editable:true},
+
+
   ];
+
   defaultColDef: ColDef = {
+
     flex: 1,
   };
 
