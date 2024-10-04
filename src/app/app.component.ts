@@ -103,7 +103,12 @@ export class AppComponent implements OnInit {
         }
     });
   }
-
+  public editRow(id:number){
+    this.gridApi.startEditingCell({
+      rowIndex: id,
+      colKey: 'id',
+    });
+  }
   public deleteRow(id: number) {
     let params = new HttpParams().set('id', id);
     this.http.post(`http://localhost:8080/api/delete_data?id=${id}`,{}) // Send the entire row object as the body
@@ -123,27 +128,13 @@ export class AppComponent implements OnInit {
       });
   }
 //
-// <div style="display: flex; justify-content: space-between;">
-//   <button class="edit-button" style="background:none; border:none; cursor:pointer;"
-//   onClick="window.angularComponentRef.editRow(${JSON.stringify(params.data)})">
-//   <i class="fas fa-pencil-alt" style="color: #007bff;"></i>
-//     </button>
-//     <button class="delete-button" style="background:none; border:none; cursor:pointer;"
-//   onClick="window.angularComponentRef.deleteRow(${params.data.id})">
-//   <i class="fas fa-trash" style="color: #dc3545;"></i>
-//     </button>
-//     </div>
+
+
+
   // Column Definitions: Defines the columns to be displayed.
   colDefs: ColDef<IRow>[] = [
-    {
-      headerName: 'Action',
-      cellRenderer: PopupCellRenderer,
-      colId: 'action',
-      pinned: 'left',
-      editable: false,
-      maxWidth: 150,
-    },
-    { field: 'id', editable:true},
+
+    { field: 'id', flex: 0.5, editable:true},
     { field: 'lastName', editable:true},
     { field: 'firstName', editable:true},
     {
@@ -164,7 +155,27 @@ export class AppComponent implements OnInit {
     { field: 'university' , editable:true},
     { field: 'major' , editable:true},
     { field: 'graduationYear' , editable:true},
-
+    {
+      headerName: 'Action',
+      colId: 'action',
+      pinned: 'right',
+      editable: false,
+      flex: 0.5,
+      cellRenderer: (params: ICellRendererParams) => {
+      return `
+        <div style="display: flex; justify-content: space-between;">
+      <button class="edit-button" style="background:none; border:none; cursor:pointer;"
+      onClick="window.angularComponentRef.editRow(${params.node.rowIndex})">
+      <i class="fas fa-pencil-alt" style="color: #007bff;"></i>
+      </button>
+      <button class="delete-button" style="background:none; border:none; cursor:pointer;"
+      onClick="window.angularComponentRef.deleteRow(${params.data.id})">
+      <i class="fas fa-trash" style="color: #dc3545;"></i>
+      </button>
+      </div>
+      `;
+      }
+    },
 
   ];
 

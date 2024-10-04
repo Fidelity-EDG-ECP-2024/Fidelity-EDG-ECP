@@ -6,6 +6,8 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common'; // Import CommonModule
 import tippy, { hideAll } from 'tippy.js';
+import { GridApi } from 'ag-grid-community';
+
 
 @Component({
   selector: 'simple-popup',
@@ -34,6 +36,7 @@ export class PopupCellRenderer implements AfterViewInit {
   private params:any;
   protected isOpen = false;
   private tippyInstance:any;
+  private gridApi!: GridApi; // Declare gridApi for use within the component
 
   @ViewChild('content') container:any;
 
@@ -48,21 +51,22 @@ export class PopupCellRenderer implements AfterViewInit {
 
   agInit(params:any) {
     this.params = params;
+    this.gridApi = params.api;
   }
 
   onClickHandler(option:any) {
     this.togglePopup();
     if (option === 'create') {
-      this.params.api.applyTransaction({
+      this.gridApi.applyTransaction({
         add: [{}],
       });
     }
     if (option === 'delete') {
-      this.params.api.applyTransaction({ remove: [this.params.data] });
+      this.gridApi.applyTransaction({ remove: [this.params.data] });
     }
 
     if (option === 'edit') {
-      this.params.api.startEditingCell({
+      this.gridApi.startEditingCell({
         rowIndex: this.params.rowIndex,
         colKey: 'id',
       });
