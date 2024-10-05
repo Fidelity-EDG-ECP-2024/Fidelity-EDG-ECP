@@ -1,0 +1,35 @@
+.add-row-button {
+  background-color: #28a745; /* Green for Add */
+  color: white;              /* Text color */
+  border: none;              /* Remove border */
+  border-radius: 5px;       /* Rounded corners */
+  padding: 10px 15px;       /* Padding for better size */
+  cursor: pointer;           /* Cursor change on hover */
+  font-size: 16px;          /* Font size */
+}
+
+.edit-button {
+  background-color: #ffc107; /* Yellow for Edit */
+  color: white;              /* Text color */
+  border: none;              /* Remove border */
+  border-radius: 5px;       /* Rounded corners */
+  padding: 10px 15px;       /* Padding for better size */
+  cursor: pointer;           /* Cursor change on hover */
+  font-size: 16px;          /* Font size */
+}
+
+.delete-button {
+  background-color: #dc3545; /* Red for Delete */
+  color: white;              /* Text color */
+  border: none;              /* Remove border */
+  border-radius: 5px;       /* Rounded corners */
+  padding: 10px 15px;       /* Padding for better size */
+  cursor: pointer;           /* Cursor change on hover */
+  font-size: 16px;          /* Font size */
+}
+
+.add-row-button i,
+.edit-button i,
+.delete-button i {
+  margin-right: 5px;        /* Space between the icon and text */
+}
