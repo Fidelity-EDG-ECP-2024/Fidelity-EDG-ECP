@@ -10,6 +10,9 @@ import { GridOptions } from 'ag-grid-community';
 import { MatIconModule } from '@angular/material/icon'; // Import MatIconModule
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {MatButtonModule} from '@angular/material/button';
+import {MatToolbar} from "@angular/material/toolbar";
+import {NgOptimizedImage} from "@angular/common";
+// import FidelityLogo from "../../public/FidelityLogo.jpg"
 
 interface IRow {
   id: number;
@@ -27,15 +30,18 @@ declare global {
 }
 @Component({
   selector: 'app-root',
-  imports: [AgGridAngular, HttpClientModule, MatButtonModule, MatIconModule, MatTooltipModule],
+  imports: [AgGridAngular, HttpClientModule, MatButtonModule, MatIconModule, MatTooltipModule, MatToolbar, NgOptimizedImage],
   styleUrls: ['./app.component.css'],
   standalone: true,
   template:
     `
+      <mat-toolbar style="background: #6D933E">
+        <img ngSrc="../assets/FidelityLogo.jpg" alt="Fidelity Logo Here" height="126" width="225">
+      </mat-toolbar>
       <!-- The AG Grid component -->
       <ag-grid-angular
         class="ag-theme-quartz"
-        style="height: 500px;"
+        style="height: 300px;"
         [gridOptions]="gridOptions"
         [rowData]="rowData"
         [columnDefs]="colDefs"
@@ -247,11 +253,11 @@ export class AppComponent implements OnInit {
       cellRenderer: (params: ICellRendererParams) => {
         return `
         <div>
-          <button mat-button onClick="window.angularComponentRef.editRow(${params.data.id})">
-            ${this.icons.edit} Edit
+          <button mat-mini-fab onclick="window.angularComponentRef.editRow(${params.data.id})">
+            <span class="material-icons">edit</span>
           </button>
-          <button mat-icon-button color="warn" onClick="window.angularComponentRef.deleteRow(${params.data.id})">
-            ${this.icons.delete} Delete
+          <button mat-mini-fab color="warn" onclick="window.angularComponentRef.deleteRow(${params.data.id})">
+            <span class="material-icons">delete</span>
           </button>
         </div>
       `;
