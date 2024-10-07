@@ -35,9 +35,14 @@ declare global {
   standalone: true,
   template:
     `
-      <mat-toolbar style="background: #6D933E">
-        <img ngSrc="../assets/FidelityLogo.jpg" alt="Fidelity Logo Here" height="126" width="225">
+
+      <mat-toolbar style="background: #6D933E; height: fit-content" >
+        <img ngSrc="../assets/FidelityLogo.jpg" alt="Fidelity Logo Here" height="84" width="150">
       </mat-toolbar>
+
+      <h1>
+        Intern Table Data
+      </h1>
       <!-- The AG Grid component -->
       <ag-grid-angular
         class="ag-theme-quartz"
@@ -54,6 +59,7 @@ declare global {
         (cellClicked)="onCellClicked($event)"
         (rowValueChanged)="onRowValueChanged($event)"
       />
+
 
       <div style="margin-top: 10px; text-align: center;">
         <button mat-raised-button color="primary" (click)="addRow()">
