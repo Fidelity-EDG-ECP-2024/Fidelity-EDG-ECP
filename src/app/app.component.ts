@@ -36,13 +36,21 @@ declare global {
   template:
     `
 
-      <mat-toolbar style="background: #6D933E; height: fit-content" >
-        <img ngSrc="../assets/FidelityLogo.jpg" alt="Fidelity Logo Here" height="84" width="150">
+      <mat-toolbar style="background: #6D933E; height: 66px" >
+        <img ngSrc="../assets/FidelityLogo.jpg" alt="Fidelity Logo Here" height="44" width="225">
       </mat-toolbar>
 
-      <h1>
-        Intern Table Data
+      <div style="text-align: center; margin-top:3rem; color: #6D933E">
+      <h1 >
+        Early Career Portal
+
+        <hr style="height: 1px; margin-left: 44.5rem; margin-right: 44.5rem;  margin-top: 1rem; margin-bottom: 1.5rem; background-color: #808080; border: none;" />
       </h1>
+
+      </div>
+      <h2 style="margin-left: 1rem">
+        Intern Table Data
+      </h2>
       <!-- The AG Grid component -->
       <ag-grid-angular
         class="ag-theme-quartz"
