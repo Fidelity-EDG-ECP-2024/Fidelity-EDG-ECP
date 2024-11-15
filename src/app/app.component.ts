@@ -12,6 +12,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import {MatButtonModule} from '@angular/material/button';
 import {MatToolbar} from "@angular/material/toolbar";
 import {NgOptimizedImage} from "@angular/common";
+import {MatTab, MatTabGroup} from "@angular/material/tabs";
+import {MatCardTitle} from "@angular/material/card";
+import {MatFormField, MatLabel, MatOption, MatSelect} from "@angular/material/select";
+import {MatSlider, MatSliderRangeThumb} from "@angular/material/slider";
 // import FidelityLogo from "../../public/FidelityLogo.jpg"
 
 interface IRow {
@@ -30,36 +34,116 @@ declare global {
 }
 @Component({
   selector: 'app-root',
-  imports: [AgGridAngular, HttpClientModule, MatButtonModule, MatIconModule, MatTooltipModule, MatToolbar, NgOptimizedImage],
+  imports: [AgGridAngular, HttpClientModule, MatButtonModule, MatIconModule, MatTooltipModule, MatToolbar, NgOptimizedImage, MatTabGroup, MatTab, MatCardTitle, MatSelect, MatFormField, MatOption, MatLabel, MatSlider, MatSliderRangeThumb],
   styleUrls: ['./app.component.css'],
   standalone: true,
   template:
     `
       <mat-toolbar style="background: #6D933E">
-        <img ngSrc="../assets/FidelityLogo.jpg" alt="Fidelity Logo Here" height="126" width="225">
+        <img ngSrc="../assets/FidelityLogo.jpg" alt="Fidelity Logo Here" height="64" width="114">
       </mat-toolbar>
-      <!-- The AG Grid component -->
-      <ag-grid-angular
-        class="ag-theme-quartz"
-        style="height: 300px;"
-        [gridOptions]="gridOptions"
-        [rowData]="rowData"
-        [columnDefs]="colDefs"
-        [defaultColDef]="defaultColDef"
-        [editType]="'fullRow'"
-        [suppressClickEdit]="false"
-        [animateRows]="true"
-        (gridReady)="onGridReady($event)"
-        (selectionChanged)="onSelectionChanged($event)"
-        (cellClicked)="onCellClicked($event)"
-        (rowValueChanged)="onRowValueChanged($event)"
-      />
+      <mat-card-title style="position: absolute;width: 100%;text-align: center; height: 50%; top:8%;">Configuration
+        Settings
+      </mat-card-title>
+      <mat-tab-group style="position: absolute; top: 10%; left: 20%; width: 60%;">
+        <mat-tab label="Manager Settings">
+          <div
+            style="display: flex; flex-direction: column; justify-content: flex-start; align-items: center; background-color: #f0f0f0; gap:1vh">
+            <div></div>
+            <mat-form-field appearance="fill" style="width: 45%; margin-bottom: 2vh;">
+              <mat-label>Select A Manager</mat-label>
+              <mat-select>
+                <mat-option value="1">Bob</mat-option>
+                <mat-option value="2">Steve</mat-option>
+                <mat-option value="3">Joe</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="fill" style="align-self: start; padding-left: 5%; width: 20%;">
+              <mat-label style="color: #368727;">Preferred Locations</mat-label>
+              <mat-select multiple>
+                <mat-option value="1">Boston</mat-option>
+                <mat-option value="2">Rhode Island</mat-option>
+                <mat-option value="3">New York</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-card-title style="align-self: start; padding-left: 5%">Label: Intern Bounds</mat-card-title>
+            <mat-slider min="0" max="1200" discrete="" style="width: 90%;" showTickMarks="true">
+              <input value="0" matSliderStartThumb>
+              <input value="1200" matSliderEndThumb>
+            </mat-slider>
+            <div style="display: flex; justify-content: space-between; font-size: 12px; padding-top: 1vh;padding-left: 1.5%; width: 90%; padding-bottom: 1vh;">
+              <span>0</span>
+              <span>200</span>
+              <span>400</span>
+              <span>600</span>
+              <span>800</span>
+              <span>1000</span>
+              <span>1200</span>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab label="Location Settings" style="height: 100%">
+          <div
+            style="display: flex; flex-direction: column; justify-content: flex-start; align-items: center; background-color: #f0f0f0; gap:1vh">
+            <div></div>
+            <mat-form-field appearance="fill" style="width: 35%; margin-bottom: 2vh;">
+              <mat-label>Select A Location</mat-label>
+              <mat-select>
+                <mat-option value="1">Bob</mat-option>
+                <mat-option value="2">Steve</mat-option>
+                <mat-option value="3">Joe</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div style="height: 5.824vh"></div>
+            <mat-card-title style="align-self: start; padding-left: 5%">Label: Intern Bounds</mat-card-title>
+            <mat-slider min="0" max="1200" discrete="" style="width: 90%;" showTickMarks="true">
+              <input value="0" matSliderStartThumb>
+              <input value="1200" matSliderEndThumb>
+            </mat-slider>
+            <div style="display: flex; justify-content: space-between; font-size: 12px; padding-top: 1vh;padding-left: 1.5%; width: 90%;padding-bottom: 1vh;">
+              <span>0</span>
+              <span>200</span>
+              <span>400</span>
+              <span>600</span>
+              <span>800</span>
+              <span>1000</span>
+              <span>1200</span>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab label="Skill Profile" style="height: 100%">
+          <div
+            style="display: flex; flex-direction: column; justify-content: flex-start; align-items: center; background-color: #f0f0f0; gap:1vh">
+            <div></div>
+            <mat-form-field appearance="fill" style="width: 35%; margin-bottom: 2vh;">
+              <mat-label>Select A Profile</mat-label>
+              <mat-select>
+                <mat-option value="1">CS</mat-option>
+                <mat-option value="2">Marketing</mat-option>
+                <mat-option value="3">HR</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div style="height: 5.824vh"></div>
+            <mat-card-title style="align-self: start; padding-left: 5%">Label: Intern Bounds</mat-card-title>
+            <mat-slider min="0" max="1200" discrete="" style="width: 90%;" showTickMarks="true">
+              <input value="0" matSliderStartThumb>
+              <input value="1200" matSliderEndThumb>
+            </mat-slider>
+            <div style="display: flex; justify-content: space-between; font-size: 12px; padding-top: 1vh;padding-left: 1.5%; width: 90%;padding-bottom: 1vh;">
+              <span>0</span>
+              <span>200</span>
+              <span>400</span>
+              <span>600</span>
+              <span>800</span>
+              <span>1000</span>
+              <span>1200</span>
+            </div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
 
-      <div style="margin-top: 10px; text-align: center;">
-        <button mat-raised-button color="primary" (click)="addRow()">
-          <mat-icon>add</mat-icon>
-          Add Row
-        </button>
+      <div style="display: flex; justify-content: center; margin-top: 38vh;">
+        <button mat-flat-button style="background-color: #368727">Generate Intern Placement</button>
       </div>
     `
 })
